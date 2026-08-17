@@ -12,6 +12,7 @@ from app.services.cache_service import get_cached_json, set_cached_json
 
 DASHSCOPE_RERANK_URL = "https://dashscope.aliyuncs.com/compatible-api/v1/reranks"
 
+# retriever.py 是 RAG 检索管道的核心，负责 把用户输入的查询变成最相关的攻略片段。主要功能分四块：
 
 logger = logging.getLogger(__name__)
 
@@ -332,8 +333,7 @@ def retrieve_travel_guide_chunks(
 
 
 def retrieve_travel_guide(
-    query: str, top_k: int = 3
-) -> tuple[list[str], dict[str, int], dict[str, int]]:
+    query: str, top_k: int = 3) -> tuple[list[str], dict[str, int], dict[str, int]]:
     """返回最相关的攻略片段。返回 (texts, rerank_usage, embedding_usage)。"""
     empty_usage = {"prompt_tokens": 0, "completion_tokens": 0}
     cache_key = f"rag:guide:{_normalize_cache_text(query)}:{top_k}"
